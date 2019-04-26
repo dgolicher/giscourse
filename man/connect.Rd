@@ -4,7 +4,7 @@
 \alias{connect}
 \title{Make a connection to the gis_course data base quickly.}
 \usage{
-connect()
+connect(db = "gis_course")
 }
 \arguments{
 \item{No}{parameters needed}
