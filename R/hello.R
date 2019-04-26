@@ -13,3 +13,10 @@ qmap<-function(place="Bournemouth"){
   g<-tmaptools::geocode_OSM(place)
   mapview::mapview(g$bbox)
 }
+
+emap<-function(place="Bournemouth")
+{
+  mapview(geocode_OSM(place)$bbox) %>% editMap() -> edits
+  write_sf(edits$drawn,conn, "my_edits",overwrite=TRUE)
+}
+
