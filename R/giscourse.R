@@ -46,6 +46,15 @@ add_shp<-function(flnm= "Ancient_Woodlands_England.shp",pth="big_data/shapefiles
 }
 
 
+merge_rasters<-function(fls=fls,tabnm="dsm2m",dbn=db,srid=27700){
+  com<-sprintf("PGPASSWORD=docker raster2pgsql -d -s %s %s %s |
+  PGPASSWORD=docker psql -h postgis -U docker -d %s",srid,fls[1],tabnm,dbn)
+  system(com)
+  for(i in 2:length(fls)){
+    com<-sprintf("PGPASSWORD=docker raster2pgsql -a -s %s %s %s |
+               PGPASSWORD=docker psql -h postgis -U docker -d %s",srid,fls[i],tabnm,dbn)
+    system(com)}
+}
 
 
 
