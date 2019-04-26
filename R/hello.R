@@ -9,3 +9,7 @@ connect<-function(){
   return(conn)
 }
 
+qmap<-function(place="Bournemouth"){
+  g<-tmaptools::geocode_OSM(place)
+  mapview::mapview(g$bbox)
+}
