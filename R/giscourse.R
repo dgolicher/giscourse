@@ -82,3 +82,26 @@ emap<-function(place="Bournemouth",write=TRUE,table="my_edits")
 
 }
 
+
+#' Distance query
+#' Finds all geometries for a query lying within a distance of a
+#' place, found through Geocoding
+#'
+#' @param place
+#' @param dist
+#' @param query
+#'
+#' @return
+#' @export
+#'
+#' @examples dquery() %>% qtm()
+dquery<-function(place="Hengistbury head",dist=1000,query="select * from ph_v2_1"){
+  require(tmaptools)
+  require(sf)
+  g<-geocode_OSM(place)
+  pnt<-sprintf("select st_transform(st_setsrid(st_makepoint(%s,%s),4326),27700) geom",g$coords[1],g$coords[2])
+  query<-sprintf("select s1.* from (%s) s1, (%s) s2
+where st_dwithin(s2.geom, s1.geom, %s) ",query,pnt,dist)
+  st_read(conn, query=query)
+}
+
