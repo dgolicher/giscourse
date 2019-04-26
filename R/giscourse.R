@@ -1,3 +1,11 @@
+#' Make a connection to the gis_course data base quickly.
+#'
+#' @param No parameters
+#' @return returns the connection
+#' @examples
+#' conn<-connect()
+
+
 
 connect<-function(){
   library(RPostgreSQL)
@@ -7,6 +15,10 @@ connect<-function(){
   dbname = "gis_course" ,user = "gis_course", password = "gis_course123")
   return(conn)
 }
+
+
+
+
 
 qmap<-function(place="Bournemouth"){
   g<-tmaptools::geocode_OSM(place)
