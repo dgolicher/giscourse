@@ -10,5 +10,8 @@ phab_choose(place = "Bournemouth", phab = "heath", dist = 5000)
 \item{dist}{}
 }
 \description{
-Give a place, a radius and some words
+Give a place, a radius and some words for the phabitat
+}
+\examples{
+phab_choose \%>\% mapview()
 }
