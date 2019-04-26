@@ -50,12 +50,26 @@ hansen_wms<-function(m){
 
 
 
-emap<-function(place="Bournemouth")
+#' Quickly draw some
+#'
+#' @param place Defaults to Bournemouth. Geocoded.
+#' @param write Defaults to TRUE.Writes to the course data base
+#' @param table Name of the table in the data base to write to
+#'
+#' @return A geometry
+#' @export
+#'
+#' @examples
+emap<-function(place="Bournemouth",write=TRUE,table="my_edits")
 {
-  require(mapedit)
-  require(mapview)
-  require(tmaptools)
-  mapview(geocode_OSM(place)$bbox) %>% editMap() -> edits
-  write_sf(edits$drawn,conn, "my_edits",overwrite=TRUE)
+  if(interactive()){
+    require(mapedit)
+    require(mapview)
+    require(tmaptools)
+    mapview(geocode_OSM(place)$bbox) %>% editMap() -> edits
+    if(write) write_sf(edits$drawn,conn, table,overwrite=TRUE)
+    return(edits$drawn)
+    }
+
 }
 
