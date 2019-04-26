@@ -33,7 +33,16 @@ qmap<-function(place="Bournemouth"){
   mapview::mapview(g$bbox)
 }
 
+#' Add Hansen's deforestation maps to tropical areas in WMS format
+#' This is for visualisation only
+#' @param m
+#'
+#' @return
+#' @export
+#'
+#' @examples qmap("Sumatra") %>% hansen_wms()
 hansen_wms<-function(m){
+
   require(leaflet.extras)
   require(mapview)
   m@map %>% addFullscreenControl() %>% addMiniMap(position = "bottomleft",zoomLevelOffset = -4, toggleDisplay = TRUE) %>%
@@ -50,8 +59,8 @@ hansen_wms<-function(m){
 
 
 
-#' Quickly draw some
-#'
+#' Quickly draw a geometry and save it in the data base
+#' Only works interactively: Not run in markdown.
 #' @param place Defaults to Bournemouth. Geocoded.
 #' @param write Defaults to TRUE.Writes to the course data base
 #' @param table Name of the table in the data base to write to

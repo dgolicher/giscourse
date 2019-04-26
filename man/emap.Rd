@@ -2,7 +2,8 @@
 % Please edit documentation in R/giscourse.R
 \name{emap}
 \alias{emap}
-\title{Quickly draw some}
+\title{Quickly draw a geometry and save it in the data base
+Only works interactively: Not run in markdown.}
 \usage{
 emap(place = "Bournemouth", write = TRUE, table = "my_edits")
 }
@@ -17,5 +18,6 @@ emap(place = "Bournemouth", write = TRUE, table = "my_edits")
 A geometry
 }
 \description{
-Quickly draw some
+Quickly draw a geometry and save it in the data base
+Only works interactively: Not run in markdown.
 }
