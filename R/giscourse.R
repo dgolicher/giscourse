@@ -208,3 +208,20 @@ where st_dwithin(s2.geom, s1.geom, %s) ",query,pnt,dist)
   st_read(conn, query=query)
 }
 
+#' Choose a type of priority habitat
+#'
+#' Give a place, a radius and some words
+#'
+#' @param place
+#' @param phab
+#' @param dist
+#'
+#' @return
+#' @export
+#'
+#' @examples
+phab_choose<-function(place="Bournemouth",phab="heath", dist=5000)
+{
+  quer <-sprintf("select * from ph_v2_1 where main_habit ilike '%%s%",phab)
+  dquery(place=place,dist=dist,query =quer)
+}
