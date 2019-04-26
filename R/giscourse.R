@@ -28,12 +28,12 @@ connect<-function(db="gis_course"){
 #' @export
 #'
 #' @examples
-sconnect<-function(db="gis_course",pwd="docker"){
+sconnect<-function(db="gis_course"){
   library(RPostgreSQL)
   library(maptools)
   library(raster)
   conn <- dbConnect("PostgreSQL", host = "postgis",
-                    dbname = db ,user = "docker", password = pwd)
+                    dbname = db ,user = "docker", password = 'docker')
   return(conn)
 }
 
@@ -55,10 +55,9 @@ make_db<-function(db="gis_course2")
 
 
 #' Add shape files to data base
-#' Adds shapefiles
 #' Note that by default the table name will
 #' be the shapefile name without the extension.
-#' Use your own name, tabnm= "mytable" if you want to set the table name.
+#' Use your own table name, tabnm= "mytable" if you want to change this.
 #'
 #' @param flnm
 #' @param pth
@@ -81,8 +80,8 @@ add_shp<-function(flnm= "Ancient_Woodlands_England.shp",pth="big_data/shapefiles
 
 
 #' A totally non generic function for merging rasters.
-#' Takes some fole names and a table name
-#' Pushes it into the db on the server
+#' Takes a vector of file names and a table name
+#' Pushes all the files into the same table on the db on the server
 #'
 #'
 #' @param fls
@@ -149,7 +148,11 @@ hansen_wms<-function(m){
 
 
 #' Quickly draw a geometry and save it in the data base
-#' Only works interactively: Not run in markdown.
+#' Only works interactively: Should not run by mistake in markdown.
+#' Notice that is wrie is true the results are written to the connected
+#' data base on conn to a table called my_edits.
+#' This will overwrite any previous my_edits layer unless
+#' a different name is given for the table.
 #' @param place Defaults to Bournemouth. Geocoded.
 #' @param write Defaults to TRUE.Writes to the course data base
 #' @param table Name of the table in the data base to write to

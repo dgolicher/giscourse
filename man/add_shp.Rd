@@ -3,10 +3,9 @@
 \name{add_shp}
 \alias{add_shp}
 \title{Add shape files to data base
-Adds shapefiles
 Note that by default the table name will
 be the shapefile name without the extension.
-Use your own name, tabnm= "mytable" if you want to set the table name.}
+Use your own table name, tabnm= "mytable" if you want to change this.}
 \usage{
 add_shp(flnm = "Ancient_Woodlands_England.shp",
   pth = "big_data/shapefiles", srid = 27700, tabnm = "",
@@ -17,10 +16,9 @@ add_shp(flnm = "Ancient_Woodlands_England.shp",
 }
 \description{
 Add shape files to data base
-Adds shapefiles
 Note that by default the table name will
 be the shapefile name without the extension.
-Use your own name, tabnm= "mytable" if you want to set the table name.
+Use your own table name, tabnm= "mytable" if you want to change this.
 }
 \examples{
 

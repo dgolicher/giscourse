@@ -5,7 +5,7 @@
 \title{Make super user connection
 Use with care}
 \usage{
-sconnect(db = "gis_course", pwd = "docker")
+sconnect(db = "gis_course")
 }
 \arguments{
 \item{db}{Default is gis_course}

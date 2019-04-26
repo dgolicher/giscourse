@@ -3,8 +3,8 @@
 \name{merge_rasters}
 \alias{merge_rasters}
 \title{A totally non generic function for merging rasters.
-Takes some fole names and a table name
-Pushes it into the db on the server}
+Takes a vector of file names and a table name
+Pushes all the files into the same table on the db on the server}
 \usage{
 merge_rasters(fls = fls, tabnm = "dsm2m", dbn = db, srid = 27700)
 }
@@ -13,6 +13,6 @@ merge_rasters(fls = fls, tabnm = "dsm2m", dbn = db, srid = 27700)
 }
 \description{
 A totally non generic function for merging rasters.
-Takes some fole names and a table name
-Pushes it into the db on the server
+Takes a vector of file names and a table name
+Pushes all the files into the same table on the db on the server
 }
