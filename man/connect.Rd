@@ -7,7 +7,7 @@
 connect()
 }
 \arguments{
-\item{No}{parameters}
+\item{No}{parameters needed}
 }
 \value{
 returns the connection
@@ -17,4 +17,5 @@ Make a connection to the gis_course data base quickly.
 }
 \examples{
 conn<-connect()
+
 }

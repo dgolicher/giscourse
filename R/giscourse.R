@@ -1,13 +1,13 @@
 #' Make a connection to the gis_course data base quickly.
 #'
-#' @param No parameters
+#' @param No parameters needed
 #' @return returns the connection
 #' @examples
 #' conn<-connect()
-
-
+#'
 
 connect<-function(){
+
   library(RPostgreSQL)
   library(maptools)
   library(raster)
@@ -18,9 +18,17 @@ connect<-function(){
 
 
 
-
-
+#' Quckly form a map using geocoding to find a place
+#'
+#' @param place
+#'
+#' @return A mapview map
+#'
+#' @examples
+#' qmap("Arne Dorset)
+#'
 qmap<-function(place="Bournemouth"){
+
   g<-tmaptools::geocode_OSM(place)
   mapview::mapview(g$bbox)
 }
