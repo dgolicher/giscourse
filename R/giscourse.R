@@ -179,7 +179,7 @@ emap<-function(place="Bournemouth",write=TRUE,table="my_edits")
     require(mapview)
     require(tmaptools)
     mapview(geocode_OSM(place)$bbox, alpha.regions = 0) %>% editMap() -> edits
-    if(write) write_sf(edits$drawn,conn, table,overwrite=TRUE)
+    if(write) st_write(edits$drawn,conn, table,overwrite=TRUE)
     return(edits$drawn)
     }
 
