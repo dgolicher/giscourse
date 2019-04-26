@@ -2,10 +2,7 @@
 % Please edit documentation in R/giscourse.R
 \name{add_shp}
 \alias{add_shp}
-\title{Add shape files to data base
-Note that by default the table name will
-be the shapefile name without the extension.
-Use your own table name, tabnm= "mytable" if you want to change this.}
+\title{Add shape files to data base}
 \usage{
 add_shp(flnm = "Ancient_Woodlands_England.shp",
   pth = "big_data/shapefiles", srid = 27700, tabnm = "",
@@ -15,7 +12,6 @@ add_shp(flnm = "Ancient_Woodlands_England.shp",
 \item{db}{}
 }
 \description{
-Add shape files to data base
 Note that by default the table name will
 be the shapefile name without the extension.
 Use your own table name, tabnm= "mytable" if you want to change this.

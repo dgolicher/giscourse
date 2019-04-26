@@ -1,10 +1,10 @@
 
-#'
+#' Quick connect
 #'
 #' Make a connection to the gis_course data base quickly.
 #'
 #' @param No parameters needed
-#' @return returns the connection
+#' @return Jusr returns the connection
 #' @examples
 #' conn<-connect()
 #'
@@ -20,14 +20,15 @@ connect<-function(db="gis_course"){
 }
 
 #' Make super user connection
-#' Use with care
-#' @param pwd
-#' @param db  Default is gis_course
+#'
+#' Use with great care, as this gives permsissions to drop tables.
+#'
+#' @param db  Default db is gis_course
 #'
 #' @return
 #' @export
 #'
-#' @examples
+#' @examples conn<-sconnect()
 sconnect<-function(db="gis_course"){
   library(RPostgreSQL)
   library(maptools)
@@ -38,7 +39,9 @@ sconnect<-function(db="gis_course"){
 }
 
 
-#' Super user make a new data base
+#' Super user: Make a new data base
+#'
+#'
 #' Use with great care. Will wipe out prexisting data base!
 #' @param db
 #'
@@ -55,6 +58,8 @@ make_db<-function(db="gis_course2")
 
 
 #' Add shape files to data base
+#'
+#'
 #' Note that by default the table name will
 #' be the shapefile name without the extension.
 #' Use your own table name, tabnm= "mytable" if you want to change this.
@@ -80,6 +85,8 @@ add_shp<-function(flnm= "Ancient_Woodlands_England.shp",pth="big_data/shapefiles
 
 
 #' A totally non generic function for merging rasters.
+#'
+#'
 #' Takes a vector of file names and a table name
 #' Pushes all the files into the same table on the db on the server
 #'
@@ -106,7 +113,9 @@ merge_rasters<-function(fls=fls,tabnm="dsm2m",dbn=db,srid=27700){
 
 
 
-#' Quckly form a map using geocoding to find a place
+#' Quick map.
+#'
+#' Quckly form a map using geocoding to any typed place name
 #'
 #' @param place
 #'
@@ -118,7 +127,7 @@ merge_rasters<-function(fls=fls,tabnm="dsm2m",dbn=db,srid=27700){
 qmap<-function(place="Bournemouth"){
 
   g<-tmaptools::geocode_OSM(place)
-  mapview::mapview(g$bbox)
+  mapview::mapview(g$bbox, alpha.regions = 0)
 }
 
 #' Add Hansen's deforestation maps to tropical areas in WMS format
@@ -169,7 +178,7 @@ emap<-function(place="Bournemouth",write=TRUE,table="my_edits")
     require(mapedit)
     require(mapview)
     require(tmaptools)
-    mapview(geocode_OSM(place)$bbox) %>% editMap() -> edits
+    mapview(geocode_OSM(place)$bbox, alpha.regions = 0) %>% editMap() -> edits
     if(write) write_sf(edits$drawn,conn, table,overwrite=TRUE)
     return(edits$drawn)
     }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/giscourse.R
 \name{connect}
 \alias{connect}
-\title{Make a connection to the gis_course data base quickly.}
+\title{Quick connect}
 \usage{
 connect(db = "gis_course")
 }
@@ -10,7 +10,7 @@ connect(db = "gis_course")
 \item{No}{parameters needed}
 }
 \value{
-returns the connection
+Jusr returns the connection
 }
 \description{
 Make a connection to the gis_course data base quickly.

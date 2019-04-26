@@ -2,8 +2,7 @@
 % Please edit documentation in R/giscourse.R
 \name{make_db}
 \alias{make_db}
-\title{Super user make a new data base
-Use with great care. Will wipe out prexisting data base!}
+\title{Super user: Make a new data base}
 \usage{
 make_db(db = "gis_course2")
 }
@@ -11,6 +10,5 @@ make_db(db = "gis_course2")
 \item{db}{}
 }
 \description{
-Super user make a new data base
 Use with great care. Will wipe out prexisting data base!
 }

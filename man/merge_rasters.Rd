@@ -2,9 +2,7 @@
 % Please edit documentation in R/giscourse.R
 \name{merge_rasters}
 \alias{merge_rasters}
-\title{A totally non generic function for merging rasters.
-Takes a vector of file names and a table name
-Pushes all the files into the same table on the db on the server}
+\title{A totally non generic function for merging rasters.}
 \usage{
 merge_rasters(fls = fls, tabnm = "dsm2m", dbn = db, srid = 27700)
 }
@@ -12,7 +10,6 @@ merge_rasters(fls = fls, tabnm = "dsm2m", dbn = db, srid = 27700)
 \item{srid}{}
 }
 \description{
-A totally non generic function for merging rasters.
 Takes a vector of file names and a table name
 Pushes all the files into the same table on the db on the server
 }

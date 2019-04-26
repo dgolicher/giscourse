@@ -2,15 +2,16 @@
 % Please edit documentation in R/giscourse.R
 \name{sconnect}
 \alias{sconnect}
-\title{Make super user connection
-Use with care}
+\title{Make super user connection}
 \usage{
 sconnect(db = "gis_course")
 }
 \arguments{
-\item{db}{Default is gis_course}
+\item{db}{Default db is gis_course}
 }
 \description{
-Make super user connection
-Use with care
+Use with great care, as this gives permsissions to drop tables.
+}
+\examples{
+conn<-sconnect()
 }

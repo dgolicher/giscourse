@@ -2,7 +2,7 @@
 % Please edit documentation in R/giscourse.R
 \name{qmap}
 \alias{qmap}
-\title{Quckly form a map using geocoding to find a place}
+\title{Quick map.}
 \usage{
 qmap(place = "Bournemouth")
 }
@@ -13,5 +13,5 @@ qmap(place = "Bournemouth")
 A mapview map
 }
 \description{
-Quckly form a map using geocoding to find a place
+Quckly form a map using geocoding to any typed place name
 }
