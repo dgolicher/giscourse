@@ -16,6 +16,9 @@ qmap<-function(place="Bournemouth"){
 
 emap<-function(place="Bournemouth")
 {
+  require(mapedit)
+  require(mapview)
+  require(tmaptools)
   mapview(geocode_OSM(place)$bbox) %>% editMap() -> edits
   write_sf(edits$drawn,conn, "my_edits",overwrite=TRUE)
 }
