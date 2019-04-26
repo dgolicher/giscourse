@@ -1,3 +1,6 @@
+
+#'
+#'
 #' Make a connection to the gis_course data base quickly.
 #'
 #' @param No parameters needed
@@ -14,6 +17,26 @@ connect<-function(){
   conn <- dbConnect("PostgreSQL", host = "postgis",
   dbname = "gis_course" ,user = "gis_course", password = "gis_course123")
   return(conn)
+}
+
+
+
+sconnect<-function(pwd="docker"){
+  library(RPostgreSQL)
+  library(maptools)
+  library(raster)
+  conn <- dbConnect("PostgreSQL", host = "postgis",
+                    dbname = "gis_course" ,user = "docker", password = pwd)
+  return(conn)
+}
+
+### BU Specific stuff
+
+make_db<-function(db="gis_course2")
+{
+system(sprintf("PGPASSWORD=docker dropdb -U docker -h postgis %s",db))
+system(sprintf("PGPASSWORD=docker createdb -U docker -h postgis --template=template_postgis %s",db))
+
 }
 
 

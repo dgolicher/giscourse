@@ -1,8 +1,8 @@
 Package: giscourse
 Type: Package
-Title: Just contains some wrapper functions for the course
+Title: Just contains some simple wrapper functions for the course
 Version: 0.1.0
-Author: Who wrote it
+Author: Duncan Golicher
 Maintainer: The package maintainer <dgolicher@bournemouth.ac.uj>
 Description: Will only work on the BU server
 License: What license is it under?
