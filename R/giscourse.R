@@ -147,6 +147,8 @@ hansen_wms<-function(m){
 
 
 
+#' Quick  edit
+#'
 #' Quickly draw a geometry and save it in the data base
 #' Only works interactively: Should not run by mistake in markdown.
 #' Notice that is wrie is true the results are written to the connected

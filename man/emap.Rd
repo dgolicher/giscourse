@@ -2,12 +2,7 @@
 % Please edit documentation in R/giscourse.R
 \name{emap}
 \alias{emap}
-\title{Quickly draw a geometry and save it in the data base
-Only works interactively: Should not run by mistake in markdown.
-Notice that is wrie is true the results are written to the connected
-data base on conn to a table called my_edits.
-This will overwrite any previous my_edits layer unless
-a different name is given for the table.}
+\title{Quick  edit}
 \usage{
 emap(place = "Bournemouth", write = TRUE, table = "my_edits")
 }
