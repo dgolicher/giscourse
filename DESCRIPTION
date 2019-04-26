@@ -7,7 +7,7 @@ Maintainer: The package maintainer <dgolicher@bournemouth.ac.uj>
 Description: Will only work on the BU server
 License: What license is it under?
 Imports: 
-        dplyr,rpostgis,ggplot2, sf,tmap,tmaptools,mapview,raster,dismo, leaflet.extras
+        dplyr,rpostgis,ggplot2,sf,tmap,tmaptools,mapview,raster,dismo,leaflet.extras
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
