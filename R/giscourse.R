@@ -19,7 +19,16 @@ connect<-function(db="gis_course"){
   return(conn)
 }
 
-sconnect<-function(pwd="docker", db="gis_course"){
+#' Make super user connection
+#' Use with care
+#' @param pwd
+#' @param db  Default is gis_course
+#'
+#' @return
+#' @export
+#'
+#' @examples
+sconnect<-function(db="gis_course",pwd="docker"){
   library(RPostgreSQL)
   library(maptools)
   library(raster)
@@ -29,6 +38,14 @@ sconnect<-function(pwd="docker", db="gis_course"){
 }
 
 
+#' Super user make a new data base
+#' Use with great care. Will wipe out prexisting data base!
+#' @param db
+#'
+#' @return
+#' @export
+#'
+#' @examples make_db("gis_course)
 make_db<-function(db="gis_course2")
 {
   system(sprintf("PGPASSWORD=docker dropdb -U docker -h postgis %s",db))
@@ -37,6 +54,23 @@ make_db<-function(db="gis_course2")
 }
 
 
+#' Add shape files to data base
+#' Adds shapefiles
+#' Note that by default the table name will
+#' be the shapefile name without the extension.
+#' Use your own name, tabnm= "mytable" if you want to set the table name.
+#'
+#' @param flnm
+#' @param pth
+#' @param srid
+#' @param tabnm
+#' @param db
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#'
 add_shp<-function(flnm= "Ancient_Woodlands_England.shp",pth="big_data/shapefiles",srid=27700,tabnm="",db="gis_course"){
 
   if(tabnm=="")tabnm<-gsub(".shp","",flnm)
@@ -46,6 +80,20 @@ add_shp<-function(flnm= "Ancient_Woodlands_England.shp",pth="big_data/shapefiles
 }
 
 
+#' A totally non generic function for merging rasters.
+#' Takes some fole names and a table name
+#' Pushes it into the db on the server
+#'
+#'
+#' @param fls
+#' @param tabnm
+#' @param dbn
+#' @param srid
+#'
+#' @return
+#' @export
+#'
+#' @examples
 merge_rasters<-function(fls=fls,tabnm="dsm2m",dbn=db,srid=27700){
   com<-sprintf("PGPASSWORD=docker raster2pgsql -d -s %s %s %s |
   PGPASSWORD=docker psql -h postgis -U docker -d %s",srid,fls[1],tabnm,dbn)
