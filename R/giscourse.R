@@ -155,6 +155,31 @@ hansen_wms<-function(m){
   return(mymap)}
 
 
+#' Add priority habitat and SSSi WMS
+#'
+#' Should add the basic WMS layers from the goeserver
+#'
+#' @param m
+#'
+#' @return
+#' @export
+#'
+#' @examples
+uK_geo<-function(m){
+  require(leaflet.extras)
+  require(mapview)
+m@map %>% addFullscreenControl() %>% addWMSTiles(group="Priority habitat",
+                        "http://r.bournemouth.ac.uk:8083/gis_course/wms",
+                        layers = "gis_course:ph_v2_1",
+                        options = WMSTileOptions(format = "image/png", transparent = TRUE)) %>%
+  addWMSTiles(group="SSSI",
+              "http://r.bournemouth.ac.uk:8083/gis_course/wms",
+              layers = "gis_course:sssi",
+              options = WMSTileOptions(format = "image/png", transparent = TRUE)) %>%
+
+  mapview:::mapViewLayersControl (names = c("Priority habitat","SSSI")) -> mymap
+return(mymap)}
+
 
 #' Quick  edit
 #'
