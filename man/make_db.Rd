@@ -4,7 +4,7 @@
 \alias{make_db}
 \title{Super user: Make a new data base}
 \usage{
-make_db(db = "gis_course2")
+make_db(db = "gis_course3")
 }
 \arguments{
 \item{db}{}

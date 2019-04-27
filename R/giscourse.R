@@ -12,8 +12,10 @@
 connect<-function(db="gis_course"){
 
   library(RPostgreSQL)
+  library(rpostgis)
   library(maptools)
   library(raster)
+  library(sf)
   conn <- dbConnect("PostgreSQL", host = "postgis",
                     dbname = db ,user = "gis_course", password = "gis_course123")
   return(conn)
@@ -48,8 +50,8 @@ sconnect<-function(db="gis_course"){
 #' @return
 #' @export
 #'
-#' @examples make_db("gis_course)
-make_db<-function(db="gis_course2")
+#' @examples make_db("gis_course2)
+make_db<-function(db="gis_course3")
 {
   system(sprintf("PGPASSWORD=docker dropdb -U docker -h postgis %s",db))
   system(sprintf("PGPASSWORD=docker createdb -U docker -h postgis --template=template_postgis %s",db))
@@ -84,7 +86,7 @@ add_shp<-function(flnm= "Ancient_Woodlands_England.shp",pth="big_data/shapefiles
 }
 
 
-#' A totally non generic function for merging rasters.
+#' Load all rasters to a table.
 #'
 #'
 #' Takes a vector of file names and a table name
@@ -128,6 +130,24 @@ qmap<-function(place="Bournemouth"){
 
   g<-tmaptools::geocode_OSM(place)
   mapview::mapview(g$bbox, alpha.regions = 0)
+}
+
+#' Quick add leaflet extras
+#'
+#' @param mp A map
+#'
+#' @return
+#' @export
+#'
+#' @examples qmap("Bournemouth") %>% extras()
+extras<-function(mp){
+  require(leaflet.extras)
+  require(dplyr)
+  mp@map %>% addSearchOSM(options = searchOptions(autoCollapse = TRUE, minLength = 2)) %>%
+    addFullscreenControl() %>%
+    addMiniMap(position = "bottomleft",tiles="OpenStreetMap.HOT",zoomLevelOffset = -5, toggleDisplay=TRUE) %>%
+    addMeasure(primaryLengthUnit ='meters', secondaryLengthUnit='kilometers',primaryAreaUnit='hectares', secondaryAreaUnit='acres',position="topleft")
+    
 }
 
 #' Add Hansen's deforestation maps to tropical areas in WMS format

@@ -2,7 +2,7 @@
 % Please edit documentation in R/giscourse.R
 \name{merge_rasters}
 \alias{merge_rasters}
-\title{A totally non generic function for merging rasters.}
+\title{Load all rasters to a table.}
 \usage{
 merge_rasters(fls = fls, tabnm = "dsm2m", dbn = db, srid = 27700)
 }
