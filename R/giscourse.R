@@ -16,6 +16,11 @@ connect<-function(db="gis_course"){
   library(maptools)
   library(raster)
   library(sf)
+  library(mapview)
+  library(leaflet.extras)
+  library(tmap)
+  library(tmaptools)
+  
   conn <- dbConnect("PostgreSQL", host = "postgis",
                     dbname = db ,user = "gis_course", password = "gis_course123")
   return(conn)
@@ -35,6 +40,11 @@ sconnect<-function(db="gis_course"){
   library(RPostgreSQL)
   library(maptools)
   library(raster)
+  library(sf)
+  library(mapview)
+  library(tmap)
+  library(tmaptools)
+  
   conn <- dbConnect("PostgreSQL", host = "postgis",
                     dbname = db ,user = "docker", password = 'docker')
   return(conn)
