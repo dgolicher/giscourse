@@ -1,4 +1,14 @@
 
+#' Quick type disconnect
+#'
+#' @param con
+#'
+#' @return
+#' @export
+#'
+#' @examples disconnect(). Assuming con is called conn
+disconnect<-function(con=conn){dbDisconnect(con)}
+
 #' Quick connect
 #'
 #' Make a connection to the gis_course data base quickly.
@@ -20,7 +30,7 @@ connect<-function(db="gis_course"){
   library(leaflet.extras)
   library(tmap)
   library(tmaptools)
-  
+
   conn <- dbConnect("PostgreSQL", host = "postgis",
                     dbname = db ,user = "gis_course", password = "gis_course123")
   return(conn)
@@ -44,7 +54,7 @@ sconnect<-function(db="gis_course"){
   library(mapview)
   library(tmap)
   library(tmaptools)
-  
+
   conn <- dbConnect("PostgreSQL", host = "postgis",
                     dbname = db ,user = "docker", password = 'docker')
   return(conn)
