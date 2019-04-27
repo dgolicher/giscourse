@@ -202,7 +202,7 @@ hansen_wms<-function(m){
 #' @export
 #'
 #' @examples
-uK_geo<-function(m){
+uk_wms<-function(m){
   require(leaflet.extras)
   require(mapview)
 m@map %>% addFullscreenControl() %>% addWMSTiles(group="Priority habitat",
