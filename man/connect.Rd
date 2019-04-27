@@ -10,7 +10,7 @@ connect(db = "gis_course")
 \item{No}{parameters needed}
 }
 \value{
-Jusr returns the connection
+Just returns the connection
 }
 \description{
 Make a connection to the gis_course data base quickly.

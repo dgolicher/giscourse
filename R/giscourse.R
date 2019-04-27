@@ -4,7 +4,7 @@
 #' Make a connection to the gis_course data base quickly.
 #'
 #' @param No parameters needed
-#' @return Jusr returns the connection
+#' @return Just returns the connection
 #' @examples
 #' conn<-connect()
 #'
@@ -126,10 +126,13 @@ merge_rasters<-function(fls=fls,tabnm="dsm2m",dbn=db,srid=27700){
 #' @examples
 #' qmap("Arne Dorset)
 #'
-qmap<-function(place="Bournemouth"){
 
+qmap<-function(place="Bournemouth"){
+  require(leaflet.extras)
   g<-tmaptools::geocode_OSM(place)
-  mapview::mapview(g$bbox, alpha.regions = 0)
+  mp<-mapview::mapview(g$bbox, alpha.regions = 0,alpha=0)
+  mp@map <-addFullscreenControl(mp@map)
+  mp
 }
 
 #' Quick add leaflet extras
@@ -147,7 +150,21 @@ extras<-function(mp){
     addFullscreenControl() %>%
     addMiniMap(position = "bottomleft",tiles="OpenStreetMap.HOT",zoomLevelOffset = -5, toggleDisplay=TRUE) %>%
     addMeasure(primaryLengthUnit ='meters', secondaryLengthUnit='kilometers',primaryAreaUnit='hectares', secondaryAreaUnit='acres',position="topleft")
-    
+
+}
+
+draw<-function(mp){
+  require(leaflet.extras)
+  require(dplyr)
+  mp@map %>%
+addDrawToolbar(
+  targetGroup = "draw",
+  editOptions = editToolbarOptions(selectedPathOptions = selectedPathOptions())
+) %>%
+  addLayersControl(
+    overlayGroups = c("draw"), options = layersControlOptions(collapsed = FALSE)
+  ) %>%
+  addStyleEditor()
 }
 
 #' Add Hansen's deforestation maps to tropical areas in WMS format
@@ -223,7 +240,7 @@ emap<-function(place="Bournemouth",write=TRUE,table="my_edits")
     require(mapedit)
     require(mapview)
     require(tmaptools)
-    mapview(geocode_OSM(place)$bbox, alpha.regions = 0) %>% editMap() -> edits
+    mapview(geocode_OSM(place)$bbox, alpha.regions = 0, alpha=0) %>% editMap() -> edits
     if(write) st_write(edits$drawn,conn, table,overwrite=TRUE)
     return(edits$drawn)
     }
