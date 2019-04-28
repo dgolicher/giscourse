@@ -30,6 +30,7 @@ connect<-function(db="gis_course"){
   library(leaflet.extras)
   library(tmap)
   library(tmaptools)
+  require(dplyr)
 
   conn <- dbConnect("PostgreSQL", host = "postgis",
                     dbname = db ,user = "gis_course", password = "gis_course123")
@@ -54,6 +55,7 @@ sconnect<-function(db="gis_course"){
   library(mapview)
   library(tmap)
   library(tmaptools)
+  require(dplyr)
 
   conn <- dbConnect("PostgreSQL", host = "postgis",
                     dbname = db ,user = "docker", password = 'docker')
@@ -242,19 +244,21 @@ return(mymap)}
 #'
 #' Quickly draw a geometry and save it in the data base
 #' Only works interactively: Should not run by mistake in markdown.
-#' Notice that is wrie is true the results are written to the connected
-#' data base on conn to a table called my_edits.
-#' This will overwrite any previous my_edits layer unless
-#' a different name is given for the table.
+#' Notice that if write is true (default) the results are written to the connected
+#' data base on conn to a table called emap
+#' This will overwrite the previous emap layer. So if you want to save
+#' permanently provide a different name for the table.
+#' The table goes in the public schema. You may want to move it later to another schema.
+#' 
 #' @param place Defaults to Bournemouth. Geocoded.
 #' @param write Defaults to TRUE.Writes to the course data base
-#' @param table Name of the table in the data base to write to
+#' @param table Name of the table to write. Defaults to emap
 #'
 #' @return A geometry
 #' @export
 #'
 #' @examples
-emap<-function(place="Bournemouth",write=TRUE,table="my_edits")
+emap<-function(place="Bournemouth",write=TRUE,table="emap")
 {
   if(interactive()){
     require(mapedit)
@@ -283,8 +287,9 @@ emap<-function(place="Bournemouth",write=TRUE,table="my_edits")
 dquery<-function(place="Hengistbury head",dist=1000,query="select * from ph_v2_1"){
   require(tmaptools)
   require(sf)
+  crs<-st_crs(st_read(conn,query = paste(query,"limit 1")))[[1]]
   g<-geocode_OSM(place)
-  pnt<-sprintf("select st_transform(st_setsrid(st_makepoint(%s,%s),4326),27700) geom",g$coords[1],g$coords[2])
+  pnt<-sprintf("select st_transform(st_setsrid(st_makepoint(%s,%s),4326),%s) geom",g$coords[1],g$coords[2],crs)
   query<-sprintf("select s1.* from (%s) s1, (%s) s2
 where st_dwithin(s2.geom, s1.geom, %s) ",query,pnt,dist)
   st_read(conn, query=query)
@@ -307,4 +312,51 @@ phab_choose<-function(place="Bournemouth",phab="heath", dist=5000)
   quer <-sprintf("select * from ph_v2_1 where
     main_habit ilike '%s%s%s'",'%',phab,'%')
   dquery(place=place,dist=dist,query =quer)
+}
+
+
+#' Getting World Clim data
+#' 
+#' Pulls out worldclim prec, tmin and tmax from the layers
+#' 
+#'
+#' @param place  Defaults to Bournemouth
+#' @param res  Resolution defaults to 10
+#'
+#' @return Returns a data frame
+#' @export
+#'
+#' @examples
+getwclim<-function(place="Bournemouth",res=2.5) {
+  require(raster)
+  require(dismo)
+  path<- "~/geoserver/data_dir/rasters/worldclim"
+  prec<-getData(name = "worldclim", var = "prec", res = res,path=path)
+  tmin<-getData(name = "worldclim", var = "tmin", res = res,path = path)
+  tmax<-getData(name = "worldclim", var = "tmax", res = res,path=path)
+  
+  require(tmaptools)
+  pnt<-as(geocode_OSM(place,as.sf=TRUE),"Spatial")
+  tmins<-unlist(raster::extract(tmin,pnt)/10)
+  tmaxs<-unlist(raster::extract(tmax,pnt)/10)
+  precs<-raster::extract(prec,pnt)
+  df<-data.frame(prec= as.vector(precs),tmax = as.vector(tmaxs),tmin=as.vector(tmins))
+  df
+}
+
+
+#' Walter and Leith diagram
+#' 
+#' Produces a simple WL diagram 
+#' Takes the df from getwlim
+#' @param df 
+#'
+#' @return
+#' @export
+#'
+#' @examples  getwclim() %>% wldiag()
+wldiag<-function(df){
+  require(climatol)
+  mat<-rbind(df$prec,df$tmax,df$tmin,df$tmin)
+  diagwl(mat) 
 }

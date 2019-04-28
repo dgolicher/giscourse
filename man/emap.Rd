@@ -4,14 +4,14 @@
 \alias{emap}
 \title{Quick  edit}
 \usage{
-emap(place = "Bournemouth", write = TRUE, table = "my_edits")
+emap(place = "Bournemouth", write = TRUE, table = "emap")
 }
 \arguments{
 \item{place}{Defaults to Bournemouth. Geocoded.}
 
 \item{write}{Defaults to TRUE.Writes to the course data base}
 
-\item{table}{Name of the table in the data base to write to}
+\item{table}{Name of the table to write. Defaults to emap}
 }
 \value{
 A geometry
@@ -19,8 +19,9 @@ A geometry
 \description{
 Quickly draw a geometry and save it in the data base
 Only works interactively: Should not run by mistake in markdown.
-Notice that is wrie is true the results are written to the connected
-data base on conn to a table called my_edits.
-This will overwrite any previous my_edits layer unless
-a different name is given for the table.
+Notice that if write is true (default) the results are written to the connected
+data base on conn to a table called emap
+This will overwrite the previous emap layer. So if you want to save
+permanently provide a different name for the table.
+The table goes in the public schema. You may want to move it later to another schema.
 }
