@@ -10,9 +10,11 @@ wldiag(df)
 \item{df}{}
 }
 \description{
-Produces a simple WL diagram 
+Produces a simple WL diagram
 Takes the df from getwlim
 }
 \examples{
  getwclim() \%>\% wldiag()
+
+
 }

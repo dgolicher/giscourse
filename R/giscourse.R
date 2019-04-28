@@ -249,7 +249,7 @@ return(mymap)}
 #' This will overwrite the previous emap layer. So if you want to save
 #' permanently provide a different name for the table.
 #' The table goes in the public schema. You may want to move it later to another schema.
-#' 
+#'
 #' @param place Defaults to Bournemouth. Geocoded.
 #' @param write Defaults to TRUE.Writes to the course data base
 #' @param table Name of the table to write. Defaults to emap
@@ -316,9 +316,9 @@ phab_choose<-function(place="Bournemouth",phab="heath", dist=5000)
 
 
 #' Getting World Clim data
-#' 
+#'
 #' Pulls out worldclim prec, tmin and tmax from the layers
-#' 
+#'
 #'
 #' @param place  Defaults to Bournemouth
 #' @param res  Resolution defaults to 10
@@ -334,7 +334,7 @@ getwclim<-function(place="Bournemouth",res=2.5) {
   prec<-getData(name = "worldclim", var = "prec", res = res,path=path)
   tmin<-getData(name = "worldclim", var = "tmin", res = res,path = path)
   tmax<-getData(name = "worldclim", var = "tmax", res = res,path=path)
-  
+
   require(tmaptools)
   pnt<-as(geocode_OSM(place,as.sf=TRUE),"Spatial")
   tmins<-unlist(raster::extract(tmin,pnt)/10)
@@ -346,17 +346,19 @@ getwclim<-function(place="Bournemouth",res=2.5) {
 
 
 #' Walter and Leith diagram
-#' 
-#' Produces a simple WL diagram 
+#'
+#' Produces a simple WL diagram
 #' Takes the df from getwlim
-#' @param df 
+#' @param df
 #'
 #' @return
 #' @export
 #'
 #' @examples  getwclim() %>% wldiag()
+#'
+#'
 wldiag<-function(df){
   require(climatol)
   mat<-rbind(df$prec,df$tmax,df$tmin,df$tmin)
-  diagwl(mat) 
+  diagwl(mat)
 }
