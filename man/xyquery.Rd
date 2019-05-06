@@ -14,3 +14,6 @@ xyquery(x = -1.95, y = 50.667, dist = 1000,
 X is Lon, Y is Lat
 Default query get's priority habitat
 }
+\examples{
+Deprecated See mkpnt
+}
