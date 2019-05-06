@@ -140,13 +140,76 @@ mksite<-function(x="Arne,Dorset",y=0,dist=0){
 #'
 landcover<-function(x="Arne,Dorset",y=0,dist=0){
   site<-mksite(x,y,dist)
-  query<- "select l.gid,bhab,
+  query<- "select s.*, st_area(s.geom) area from
+(select l.gid,bhab,
  st_intersection(l.geom,t.geometry) geom
  from
   lcm2015gbvector l,
   tmp t
-  where st_intersects(l.geom,t.geometry)"
+  where st_intersects(l.geom,t.geometry)) s"
   lcover<-st_read(conn,query=query)
+  dbSendQuery(conn, "drop table tmp")
   lcover
 }
+
+phabitat<-function(x="Arne,Dorset",y=0,dist=0){
+  site<-mksite(x,y,dist)
+  query<- "select s.*, st_area(s.geom) area from
+(select p.gid,main_habit,
+ st_intersection(p.geom,t.geometry) geom
+ from
+  ph_v2_1 p,
+  tmp t
+  where st_intersects(p.geom,t.geometry)) s"
+  phabitat<-st_read(conn,query=query)
+  dbSendQuery(conn, "drop table tmp")
+  phabitat
+}
+
+#' Find sites of special scientific interest
+#'
+#' @param x
+#' @param y
+#' @param dist
+#'
+#' @return
+#' @export
+#'
+#' @examples
+sssi<-function(x="Arne,Dorset",y=0,dist=0){
+  site<-mksite(x,y,dist)
+  query<- "select s.*, st_area(s.geom) area from
+  (select p.gid,sssi_name,p.geom geom
+  from
+  sssi p,
+  tmp t
+  where st_intersects(p.geom,t.geometry)) s"
+  sssi<-st_read(conn,query=query)
+  dbSendQuery(conn, "drop table tmp")
+  sssi
+}
+
+#' Find osm roads and paths around a site
+#'
+#' @param x
+#' @param y
+#' @param dist
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#'
+osm<-function(x="Arne,Dorset",y=0,dist=0){
+  site<-mksite(x,y,dist)
+  query<- "select highway,st_intersection(p.geom,geometry) geom
+  from
+  (select highway,way geom from dorset_line where highway is not NULL) p,
+  tmp t
+  where st_intersects(p.geom,t.geometry)"
+  osm<-st_read(conn,query=query)
+  dbSendQuery(conn, "drop table tmp")
+  osm
+}
+
 
