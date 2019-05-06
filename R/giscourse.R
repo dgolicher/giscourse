@@ -57,7 +57,7 @@ sconnect<-function(db="gis_course"){
   library(tmaptools)
   require(dplyr)
 
-  conn <- dbConnect("PostgreSQL", host = "postgis",
+  conn <- dbConnect("PostgreSQL", host = "172.16.49.31", port=25432,
                     dbname = db ,user = "docker", password = 'docker')
   return(conn)
 }
