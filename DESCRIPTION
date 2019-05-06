@@ -6,6 +6,8 @@ Author: Duncan Golicher
 Maintainer: The package maintainer <dgolicher@bournemouth.ac.uj>
 Description: Will only work on the BU server
 License: What license is it under?
+Imports: sf,dplyr,ggplot2,RPostgreSQL,raster,dismo, leaflet.extras,
+        mapview,tmap,tmaptools,rpostgis,dismo
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
