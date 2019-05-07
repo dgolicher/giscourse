@@ -1,0 +1,109 @@
+---
+title: "Making quick site maps"
+author: "Duncan Golicher"
+date: "`r Sys.Date()`"
+output:rmarkdown::html_vignette:
+        fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE, message = FALSE,warning = FALSE,
+  comment = "#>"
+)
+```
+
+## Loading layers from the data base
+
+The giscourse package has four composite high level functions that load in data for a site. 
+
+You can either use a string of characters to geocode the site, or the coordinates as latitude and longitude. If a distance in meters is provided the functions download all features within this radius. If no distance is given then the default is to download all the features inside the OS 5km grid square for the site.
+
+### Example 1: Geocode Arne and get 5km grid square
+
+```{r}
+library(giscourse)
+conn<-connect()
+landcover("Arne, Dorset") ->arne_lcover
+sssi("Arne, Dorset") ->arne_sssi
+phabitat("Arne, Dorset") -> arne_phabitat
+osm("Arne, Dorset")->arne_osm
+```
+
+### Exploratory mapview
+
+Use burst =TRUE to plot each land use separately. Useful for exploration.
+
+```{r}
+mapviewOptions(legend=FALSE)
+mapview(arne_lcover,zcol="bhab",burst=TRUE,  hide = TRUE) %>% extras()
+```
+
+
+
+
+```{r}
+library(tmap)
+arne_lcover %>% filter(bhab !="Saltwater") %>% 
+
+qtm("bhab") + tmap_style("classic") + tmap_options(legend.outside=TRUE) + tm_scale_bar() + tm_compass(type="arrow")
+```
+
+## Example 2: Distance around a point
+
+The coordinates are for a study point in the New forest
+
+```{r}
+lon<--1.5
+lat<-50.86
+landcover(lon,lat,dist=2000) ->nf_lcover
+sssi(lon,lat,dist=2000) ->nf_sssi
+phabitat(lon,lat,dist=2000) -> nf_phabitat
+osm(lon,lat,dist=2000)->nf_osm
+
+```
+
+
+```{r}
+mapview(nf_lcover,zcol="bhab",burst=TRUE,  hide = TRUE) %>% extras()
+```
+
+
+```{r}
+
+nf_lcover %>% 
+
+qtm("bhab") + tmap_style("classic") + tmap_options(legend.outside=TRUE) + tm_scale_bar() + tm_compass(type="arrow")
+```
+
+It's easy to calculate total areas of each habitat.
+
+```{r}
+
+nf_lcover %>% group_by(bhab) %>% summarise(area_ha=round(sum(area)/10000,1)) -> areas
+```
+
+
+```{r}
+library(ggplot2)
+
+areas %>% arrange(area_ha) %>%  mutate(bhab = factor(bhab, bhab)) %>%
+ggplot(aes(x=bhab,y=area_ha,lab=area_ha)) +geom_bar(stat="identity",fill="grey") + geom_label(aes(x = bhab, y = area_ha, label = paste(area_ha,"ha"))) + coord_flip() + theme_bw()
+```
+
+
+### Saving the results to a geodata file
+
+All the layers can be written to a single geodata package file, exported from the server and dropped into a local QGIS project for work offline.
+
+
+```{r,eval=FALSE}
+st_write(arne_lcover, dsn="geodata.gpkg", layer="arne_lcover")
+st_write(arne_sssi, dsn="geodata.gpkg", layer="arne_sssi")
+## Etc ..
+```
+
