@@ -5,7 +5,7 @@ date: "`r Sys.Date()`"
 output:rmarkdown::html_vignette:
         fig_caption: yes
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{"Making quick site maps"}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
