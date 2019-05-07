@@ -6,8 +6,13 @@
 #' @return
 #' @export
 #'
-#' @examples disconnect(). Assuming con is called conn
-disconnect<-function(con=conn){dbDisconnect(con)}
+#' @examples disconnect()
+#'
+#'
+#'
+disconnect<-function(con=conn){
+  library(RPostgreSQL)
+  dbDisconnect(con)}
 
 #' Quick connect
 #'

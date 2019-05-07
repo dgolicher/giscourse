@@ -13,5 +13,8 @@ disconnect(con = conn)
 Quick type disconnect
 }
 \examples{
-disconnect(). Assuming con is called conn
+disconnect()
+
+
+
 }
