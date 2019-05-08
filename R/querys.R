@@ -213,3 +213,28 @@ osm<-function(x="Arne,Dorset",y=0,dist=0){
 }
 
 
+#' Get's DEM around point
+#'
+#' z is set to 12 by default (12 m)
+#' Use value of 14 for highest resolution (3m)
+#'
+#' @param x
+#' @param y
+#' @param dist
+#' @param z
+#'
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#'
+#'
+#'
+dem<-function(x="Arne,Dorset",y=0,dist=0,z=12)
+{
+  require(elevatr)
+  site<-mksite(x,y,dist)
+  dem <- get_elev_raster(site, z = z,clip="bbox")
+  dem
+}

@@ -28,10 +28,11 @@ You can either use a string of characters to geocode the site, or the coordinate
 ```{r}
 library(giscourse)
 conn<-connect()
-landcover("Arne, Dorset") ->arne_lcover
-sssi("Arne, Dorset") ->arne_sssi
-phabitat("Arne, Dorset") -> arne_phabitat
-osm("Arne, Dorset")->arne_osm
+arne_lcover<-landcover("Arne, Dorset") 
+arne_sssi<-sssi("Arne, Dorset") 
+arne_phabitat<-phabitat("Arne, Dorset") 
+arne_osm<-osm("Arne, Dorset")
+arne_dem<-dem("Arne, Dorset") 
 ```
 
 ### Exploratory mapview
@@ -44,13 +45,21 @@ mapview(arne_lcover,zcol="bhab",burst=TRUE,  hide = TRUE) %>% extras()
 ```
 
 
+```{r}
+arne_dem[arne_dem<1]<-NA
+sloper<-terrain(arne_dem,"slope","radians")
+aspectr<-terrain(arne_dem,"aspect","radians")
+hs<-hillShade(sloper,aspectr)
+```
+
 
 
 ```{r}
 library(tmap)
 arne_lcover %>% filter(bhab !="Saltwater") %>% 
 
-qtm("bhab") + tmap_style("classic") + tmap_options(legend.outside=TRUE) + tm_scale_bar() + tm_compass(type="arrow")
+qtm("bhab") + tmap_style("classic") + tmap_options(legend.outside=TRUE) + tm_scale_bar() + tm_compass(type="arrow") + tm_shape(hs) +
+ tm_raster(alpha=0.5,palette = gray(0:100 / 100), n = 100, legend.show = FALSE)
 ```
 
 ## Example 2: Distance around a point
