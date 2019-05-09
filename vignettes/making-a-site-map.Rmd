@@ -69,22 +69,21 @@ The coordinates are for a study point in the New forest
 ```{r}
 lon<--1.5
 lat<-50.86
-landcover(lon,lat,dist=2000) ->nf_lcover
-sssi(lon,lat,dist=2000) ->nf_sssi
-phabitat(lon,lat,dist=2000) -> nf_phabitat
-osm(lon,lat,dist=2000)->nf_osm
+landcover(lon,lat,dist=2000) ->lcover
+sssi(lon,lat,dist=2000) ->sssi
+phabitat(lon,lat,dist=2000) -> phabitat
 
 ```
 
 
 ```{r}
-mapview(nf_lcover,zcol="bhab",burst=TRUE,  hide = TRUE) %>% extras()
+mapview(lcover,zcol="bhab",burst=TRUE,  hide = TRUE) %>% extras()
 ```
 
 
 ```{r}
 
-nf_lcover %>% 
+lcover %>% 
 
 qtm("bhab") + tmap_style("classic") + tmap_options(legend.outside=TRUE) + tm_scale_bar() + tm_compass(type="arrow")
 ```
@@ -93,7 +92,9 @@ It's easy to calculate total areas of each habitat.
 
 ```{r}
 
-nf_lcover %>% group_by(bhab) %>% summarise(area_ha=round(sum(area)/10000,1)) -> areas
+lcover$bhab<-as.factor(lcover$bhab)
+str(lcover)
+lcover %>% data.frame() %>% dplyr::group_by(bhab) %>% dplyr::summarise(n=n(), area_ha=round(sum(area)/10000,1)) -> areas
 ```
 
 
@@ -114,5 +115,27 @@ All the layers can be written to a single geodata package file, exported from th
 st_write(arne_lcover, dsn="geodata.gpkg", layer="arne_lcover")
 st_write(arne_sssi, dsn="geodata.gpkg", layer="arne_sssi")
 ## Etc ..
+```
+
+
+```{r}
+corfe_dem<-dem(-2.057,50.64,dist=1000,z=14)
+sloper<-terrain(corfe_dem,"slope","radians")
+aspectr<-terrain(corfe_dem,"aspect","radians")
+hs<-hillShade(sloper,aspectr)
+
+```
+
+
+
+```{r}
+landcover(-2.057,50.64,dist=1000)->lc
+
+tm_shape(hs) +
+ tm_raster(palette = gray(0:100 / 100), n = 100, legend.show = FALSE) + tm_shape(lc) + tm_fill("bhab",alpha=0.8) +tmap_style("classic") +  tmap_options(legend.outside=TRUE) ->mp
+
+tmap_mode("view")
+mp + tm_minimap()
+
 ```
 

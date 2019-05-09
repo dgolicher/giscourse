@@ -1,6 +1,6 @@
 Package: giscourse
 Type: Package
-Title: Just contains some simple wrapper functions for the course
+Title: Some code snippets wrapped up as functions
 Version: 0.1.0
 Author: Duncan Golicher
 Maintainer: The package maintainer <dgolicher@bournemouth.ac.uj>

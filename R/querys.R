@@ -13,7 +13,8 @@
 #' @return
 #' @export
 #'
-#' @examples Deprecated See mkpnt
+#' @examples Deprecated See mkpnt instead
+#'
 xyquery<-function (x=-1.95,y=50.667, dist = 1000, query = "select * from ph_v2_1")
 {
   require(tmap)
@@ -108,14 +109,14 @@ os5km<-function(x="Wareham,Dorset",y=0){
 #' @export
 #'
 #' @examples
-mksite<-function(x="Arne,Dorset",y=0,dist=0){
+mksite<-function(x="Arne,Dorset",y=0,dist=0,bx=FALSE){
   if(dist==0){
     site<- os5km(x,y)
   }
   if(dist>0){
     site<- st_buffer(mkpnt(x,y),dist)
   }
-  write_sf(site,conn,"tmp",overwrite=TRUE)
+  write_sf(site,conn,"site",overwrite=TRUE)
   site
 }
 
@@ -145,10 +146,10 @@ landcover<-function(x="Arne,Dorset",y=0,dist=0){
  st_intersection(l.geom,t.geometry) geom
  from
   lcm2015gbvector l,
-  tmp t
+  site t
   where st_intersects(l.geom,t.geometry)) s"
   lcover<-st_read(conn,query=query)
-  dbSendQuery(conn, "drop table tmp")
+  dbSendQuery(conn, "drop table site")
   lcover
 }
 
@@ -159,10 +160,10 @@ phabitat<-function(x="Arne,Dorset",y=0,dist=0){
  st_intersection(p.geom,t.geometry) geom
  from
   ph_v2_1 p,
-  tmp t
+  site t
   where st_intersects(p.geom,t.geometry)) s"
   phabitat<-st_read(conn,query=query)
-  dbSendQuery(conn, "drop table tmp")
+  dbSendQuery(conn, "drop table site")
   phabitat
 }
 
@@ -182,10 +183,10 @@ sssi<-function(x="Arne,Dorset",y=0,dist=0){
   (select p.gid,sssi_name,p.geom geom
   from
   sssi p,
-  tmp t
+  site t
   where st_intersects(p.geom,t.geometry)) s"
   sssi<-st_read(conn,query=query)
-  dbSendQuery(conn, "drop table tmp")
+  dbSendQuery(conn, "drop table site")
   sssi
 }
 
@@ -205,10 +206,10 @@ osm<-function(x="Arne,Dorset",y=0,dist=0){
   query<- "select highway,st_intersection(p.geom,geometry) geom
   from
   (select highway,way geom from dorset_line where highway is not NULL) p,
-  tmp t
+  site t
   where st_intersects(p.geom,t.geometry)"
   osm<-st_read(conn,query=query)
-  dbSendQuery(conn, "drop table tmp")
+  dbSendQuery(conn, "drop table site")
   osm
 }
 
@@ -229,12 +230,67 @@ osm<-function(x="Arne,Dorset",y=0,dist=0){
 #'
 #' @examples
 #'
+#' dtm<-mkdem()
 #'
-#'
-dem<-function(x="Arne,Dorset",y=0,dist=0,z=12)
+mkdem<-function(x="Arne,Dorset",y=0,dist=0,z=12)
 {
   require(elevatr)
   site<-mksite(x,y,dist)
   dem <- get_elev_raster(site, z = z,clip="bbox")
   dem
 }
+
+
+#' Direct beam insolation for day of the year
+#'
+#' Calculated using SAGA
+#' Returns a raster pointing to a temporary file
+#' Save locally if you need it to be permanent
+#'
+#' @param dtm
+#' @param day
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#'
+#' dtm<-mkdem()
+#' sol<-insol(dtm)
+#'
+insol<-function(dtm,day="13/10/19"){
+  require(raster)
+  infl<-tempfile(fileext = ".sgrd")
+  outfl<-tempfile()
+  writeRaster(dtm,infl,format="SAGA", overwrite=TRUE)
+  com<-sprintf("saga_cmd ta_lighting 2 -GRD_DEM %s  -DAY '%s' -GRD_DIRECT    %s",infl,day,outfl)
+  system (com)
+  sol<-raster(paste(outfl,"sdat",sep="."))
+  sol@crs<-dtm@crs
+sol}
+
+
+#' Title
+#'
+#' @param dtm
+#'
+#' @return raster layer in temporary directory
+#' Save locally using writeRaster if needed
+#' @export
+#'
+#' @examples
+#'
+#'
+twi<-function(dtm){
+  require(raster)
+  infl<-tempfile(fileext = ".sgrd")
+  outfl<-tempfile()
+  writeRaster(dtm,infl,format="SAGA", overwrite=TRUE)
+  com<-sprintf("saga_cmd ta_hydrology 15 -DEM %s  -TWI   %s",infl,outfl)
+  system (com)
+  twi<-raster(paste(outfl,"sdat",sep="."))
+  twi@crs<-dtm@crs
+  twi}
+
+
+

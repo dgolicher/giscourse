@@ -15,5 +15,6 @@ X is Lon, Y is Lat
 Default query get's priority habitat
 }
 \examples{
-Deprecated See mkpnt
+Deprecated See mkpnt instead
+
 }

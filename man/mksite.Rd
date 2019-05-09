@@ -4,7 +4,7 @@
 \alias{mksite}
 \title{Make a site frame}
 \usage{
-mksite(x = "Arne,Dorset", y = 0, dist = 0)
+mksite(x = "Arne,Dorset", y = 0, dist = 0, bx = FALSE)
 }
 \arguments{
 \item{dist}{}
