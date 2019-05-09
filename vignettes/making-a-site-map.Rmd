@@ -32,7 +32,7 @@ arne_lcover<-landcover("Arne, Dorset")
 arne_sssi<-sssi("Arne, Dorset") 
 arne_phabitat<-phabitat("Arne, Dorset") 
 arne_osm<-osm("Arne, Dorset")
-arne_dem<-dem("Arne, Dorset") 
+arne_dem<-mkdem("Arne, Dorset") 
 ```
 
 ### Exploratory mapview
@@ -119,7 +119,10 @@ st_write(arne_sssi, dsn="geodata.gpkg", layer="arne_sssi")
 
 
 ```{r}
-corfe_dem<-dem(-2.057,50.64,dist=1000,z=14)
+corfe_dem<-mkdem(-2.057,50.64,dist=1000,z=14)
+sol<-insol(corfe_dem)
+twi<-twi(corfe_dem)
+mapview(twi)
 sloper<-terrain(corfe_dem,"slope","radians")
 aspectr<-terrain(corfe_dem,"aspect","radians")
 hs<-hillShade(sloper,aspectr)
@@ -136,6 +139,12 @@ tm_shape(hs) +
 
 tmap_mode("view")
 mp + tm_minimap()
+
+```
+
+
+
+```{r}
 
 ```
 

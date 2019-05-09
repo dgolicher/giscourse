@@ -208,14 +208,18 @@ hansen_wms<-function(m){
   require(mapview)
   m@map %>% addFullscreenControl() %>% addMiniMap(position = "bottomleft",zoomLevelOffset = -4, toggleDisplay = TRUE) %>%
     addWMSTiles(group="Forest 2000",
-                "http://r.bournemouth.ac.uk:8083/AG/wms",
-                layers = "AG:forest2000",
+                "http://r.bournemouth.ac.uk:8083/gis_course/wms",
+                layers = "gis_course:forest2000",
                 options = WMSTileOptions(format = "image/png", transparent = TRUE)) %>%
     addWMSTiles(group="Forest loss",
-                "http://r.bournemouth.ac.uk:8083/AG/wms",
-                layers = "AG:hansen_loss",
+                "http://r.bournemouth.ac.uk:8083/gis_course/wms",
+                layers = "gis_course:loss",
                 options = WMSTileOptions(format = "image/png", transparent = TRUE)) %>%
-    mapview:::mapViewLayersControl (names = c("Forest 2000","Forest loss")) -> mymap
+    addWMSTiles(group="Forest gain",
+                "http://r.bournemouth.ac.uk:8083/gis_course/wms",
+                layers = "gis_course:gain",
+                options = WMSTileOptions(format = "image/png", transparent = TRUE)) %>%
+    mapview:::mapViewLayersControl (names = c("Forest 2000","Forest loss", "Forest gain")) -> mymap
   return(mymap)}
 
 
